@@ -16,6 +16,8 @@ body {
     font-size: 4rem;
     border-bottom: 1px solid black;
     text-align: center;
+    margin: 0 auto;
+    width: 40vw;
 }
 #startside {
     text-align: center;
