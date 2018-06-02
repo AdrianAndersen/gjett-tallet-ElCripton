@@ -1,44 +1,46 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/foundation/6.4.3/css/foundation.css">
-    <style>
-        footer {
-            font-size: small;
-        }
-    </style>
-    <title>Gjett et tall</title>
+    <link rel="stylesheet" href="css/index.css" />
+    <title>Gjett tallet!</title>
 </head>
 <body>
-    <header><h1>Gjett et tall</h1></header>
+    <header><h1>Velkommen til <b>Gjett tallet!</b></h1></header>
     <main>
         <article>
-            <label for="inpGjetting">Gjett et tall</label>
-            <input id="inpGjetting" type="number"  min="0" max="10" onchange="gjett()">
-            <p id="txtBeskjed"></p>
+            <h2>Hvor vanskelig vil du gjøre det for deg selv?</h2>
+            <form id="skjemaLagVinnertall">
+                <label for="inpMinValVinnertall">Minste mulige verdi</label>
+                <input type="number" required id="inpMinValVinnertall" />
+                <label for="inpMaxValVinnertall">Høyeste mulige verdi</label>
+                <input type="number" required id="inpMaxValVinnertall" />
+                <button type="submit" id="knappLagVinnertall">Start spillet!</button>
+            </form>
+        </article>
+        <article>
+            <label for="inpGjetting">Gjett ett tall</label>
+            <input id="inpGjetting" type="number" onchange="gjett()">
+            <p id="txtTilbakemelding"></p>
         </article>
     </main>
-<footer>
-    Gjett et tall er lagd av <i>Incognito</i>
-</footer>
+    <footer>
+        <b>Gjett tallet</b> er laget av <i>Adrian</i>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
     <script>
-
-        // Få tak på HTML-objekter
-        var inpGjetting = document.getElementById("inpGjetting");
-        var txtBeskjed = document.getElementById("txtBeskjed");
-
-        var korrektTall = 3;
-
-        // Lytter funksjon som kalles når noen har gjort en gjetning.
-        function gjett(){
-
-            // Henter ut tallet brukeren har gjettet og gjør om det til et tall
-            var gjettetTall = Number(inpGjetting.value);
-
-            /* Fortsett her for å finne ut om tallet er korrekt! */
-        }
-
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyBIrD8uiCbUE0cUAFU6uG0WeJ3kNvWBoW0",
+            authDomain: "project-gjettespill.firebaseapp.com",
+            databaseURL: "https://project-gjettespill.firebaseio.com",
+            projectId: "project-gjettespill",
+            storageBucket: "project-gjettespill.appspot.com",
+            messagingSenderId: "839536326286"
+        };
+        firebase.initializeApp(config);
     </script>
+    <script src="scripts/index.js"></script>
 </body>
 </html>
