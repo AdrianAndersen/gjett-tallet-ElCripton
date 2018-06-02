@@ -1,1 +1,161 @@
-﻿body, article, form {display: grid}
+﻿* {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    color: black;
+}
+body {
+    background-image: url(../bilder/bg.jpg);
+    background-size: 100vw;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+#logo {
+    font-family: 'Copperplate Gothic';
+    font-size: 4rem;
+    border-bottom: 1px solid black;
+    text-align: center;
+}
+#startside {
+    text-align: center;
+    margin-top: 1rem;
+    width: 100vw;
+}
+#startside h2 {
+    margin-bottom: 2rem;
+}
+.difknapper {
+    border: none;
+    margin: 0.2rem;
+    height: 1.5rem;
+}
+.difknapper:hover {
+    border: 1px solid blue;
+}
+#knappDifLett {
+    background-color: lightgreen;
+}
+#knappDifMiddels {
+    background-color: yellow;
+}
+#knappDifVanskelig {
+    background-color: orangered;
+}
+#knappDifGodTid {
+    background-color: darkred;
+    color: orange;
+    font-weight: bold;
+}
+#knappDifEgendefinert {
+    background-color: deepskyblue;
+}
+#startside form {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    text-align: left;
+}
+#startside form label {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+}
+#startside form input {
+    width: 100%;
+    height: 2.5rem;
+    font-size: 2rem;
+    text-align: center;
+}
+#startside form img {
+    margin: 0 auto;
+    height: 2.5rem;
+}
+#knappLagVinnertall {
+    margin-top: 10rem;
+    padding: 2rem;
+    width: 100%;
+    border-radius: 5%;
+    border: none;
+    background-color: green;
+    font-family: Broadway;
+    font-size: 4rem;
+}
+#knappLagVinnertall:hover {
+    background-color: greenyellow;
+}
+#knappLagVinnertall:active {
+    background-color: green;
+}
+#flexfill {
+    flex-grow: 1;
+}
+footer {
+    padding: 0 0 1rem 1rem;
+}
+.kol-1 {
+    grid-column: span 1;
+}
+
+.kol-2 {
+    grid-column: span 2;
+}
+
+.kol-3 {
+    grid-column: span 3;
+}
+
+.kol-4 {
+    grid-column: span 4;
+}
+
+.kol-5 {
+    grid-column: span 5;
+}
+
+.kol-6 {
+    grid-column: span 6;
+}
+
+.kol-7 {
+    grid-column: span 7;
+}
+
+.kol-8 {
+    grid-column: span 8;
+}
+
+.kol-9 {
+    grid-column: span 9;
+}
+
+.kol-10 {
+    grid-column: span 10;
+}
+
+.kol-11 {
+    grid-column: span 11;
+}
+
+.kol-12 {
+    grid-column: span 12;
+}
+.rad-1 {
+    grid-row: span 1;
+}
+
+.rad-2 {
+    grid-row: span 2;
+}
+
+.rad-3 {
+    grid-row: span 3;
+}
+
+.rad-4 {
+    grid-row: span 4;
+}
+
+.rad-5 {
+    grid-row: span 5;
+}

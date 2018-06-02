@@ -11,7 +11,6 @@ function lagVinnertall(event) {
     minVal = Number(document.getElementById("inpMinValVinnertall").value);
     maxVal = Number(document.getElementById("inpMaxValVinnertall").value);
     vinnertall = Math.floor(Math.random() * (maxVal - minVal)) + minVal;
-    //console.log("Vinnertall: ", vinnertall);
 }
 // Lytter funksjon som kalles når noen har gjort en gjetning.
 function gjett() {

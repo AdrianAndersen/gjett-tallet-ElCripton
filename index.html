@@ -6,26 +6,44 @@
     <title>Gjett tallet!</title>
 </head>
 <body>
-    <header><h1>Velkommen til <b>Gjett tallet!</b></h1></header>
+    <header><h1 id="logo">Gjett tallet!</h1></header>
     <main>
-        <article>
-            <h2>Hvor vanskelig vil du gjøre det for deg selv?</h2>
+        <article id="startside">
+            <h2>Velg vanskelighetsgrad</h2>
             <form id="skjemaLagVinnertall">
-                <label for="inpMinValVinnertall">Minste mulige verdi</label>
+                <div class="kol-4"></div>
+                <button type="button" id="knappDifLett" class="difknapper">Lett</button>
+                <button type="button" id="knappDifMiddels" class="difknapper">Middels</button>
+                <button type="button" id="knappDifVanskelig" class="difknapper">Vanskelig</button>
+                <button type="button" id="knappDifGodTid" class="difknapper">Så du har god tid?</button>
+                <div class="kol-4"></div>
+                <div class="kol-5"></div>
+                <button type="button" id="knappDifEgendefinert" class="kol-2 difknapper">Egendefinert</button>
+                <div class="kol-5"></div>
+                <div class="kol-4"></div>
+                <label class="kol-1" for="inpMinValVinnertall">Fra</label>
+                <div class="kol-2"></div>
+                <label class="kol-1" for="inpMaxValVinnertall">Til</label>
+                <div class="kol-2"></div>
+                <div class="kol-4"></div>
                 <input type="number" required id="inpMinValVinnertall" />
-                <label for="inpMaxValVinnertall">Høyeste mulige verdi</label>
+                <img class="kol-2" src="http://www.animatedimages.org/data/media/111/animated-arrow-image-0039.gif" border="0" alt="animated-arrow-image-0039" />
                 <input type="number" required id="inpMaxValVinnertall" />
-                <button type="submit" id="knappLagVinnertall">Start spillet!</button>
+                <div class="kol-4"></div>
+                <div class="kol-5"></div>
+                <button class="kol-2" type="submit" id="knappLagVinnertall">Start spillet!</button>
+                <div class="kol-5"></div>
             </form>
         </article>
-        <article>
+        <article style="display: none">
             <label for="inpGjetting">Gjett ett tall</label>
             <input id="inpGjetting" type="number" onchange="gjett()">
             <p id="txtTilbakemelding"></p>
         </article>
     </main>
+    <div id="flexfill"></div>
     <footer>
-        <b>Gjett tallet</b> er laget av <i>Adrian</i>
+        <b>Gjett tallet!</b> er laget av <i>Adrian A. Andersen</i> for IT1 2018
     </footer>
 
     <script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
