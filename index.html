@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="no">
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="css/index.css" />
@@ -8,7 +8,7 @@
 <body>
     <header><h1 id="logo">Gjett tallet!</h1></header>
     <main>
-        <article id="startside">
+        <article id="startside" style="display: none">
             <h2>Velg vanskelighetsgrad</h2>
             <form id="skjemaLagVinnertall">
                 <div class="kol-4"></div>
@@ -34,10 +34,23 @@
                 <div class="kol-5"></div>
             </form>
         </article>
-        <article style="display: none">
-            <label for="inpGjetting">Gjett ett tall</label>
-            <input id="inpGjetting" type="number" onchange="gjett()">
-            <p id="txtTilbakemelding"></p>
+        <article id="ingameside" style="display: grid">
+            <div class="kol-2" id="tidtaker">Tid: <label class="ingameminutter">00</label>:<label id="ingamesekunder">00</label></div>
+            <div class="kol-10"></div>
+            <div class="kol-2"></div>
+            <div class="kol-8">Definisjonsmengde</div>
+            <div class="kol-2"></div>
+            <div class="kol-5"></div>
+            <label class="kol-2" for="inpGjetting">Din gjettning</label>
+            <div class="kol-5"></div>
+            <div class="kol-5"></div>
+            <input class="kol-2" id="inpGjetting" type="number">
+            <div class="kol-5"></div>
+            <button class="kol-12" type="button">Gjett!</button>
+            <div id="ingameresultater"></div>
+        </article>
+        <article id="resultatside" style="display: none">
+
         </article>
     </main>
     <div id="flexfill"></div>

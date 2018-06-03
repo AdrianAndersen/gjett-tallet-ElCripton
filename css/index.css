@@ -3,6 +3,7 @@
     padding: 0;
     text-decoration: none;
     color: black;
+    outline: none;
 }
 body {
     background-image: url(../bilder/bg.jpg);
@@ -31,9 +32,14 @@ body {
     border: none;
     margin: 0.2rem;
     height: 2rem;
+    outline: none;
 }
 .difknapper:hover {
-    border: 1px solid blue;
+    border: 0.02rem solid blue;
+}
+.difknappValgt {
+    font-weight: 900;
+    border: 0.15rem solid black;
 }
 #knappDifLett {
     background-color: lightgreen;
@@ -47,7 +53,6 @@ body {
 #knappDifGodTid {
     background-color: darkred;
     color: orange;
-    font-weight: bold;
 }
 #knappDifEgendefinert {
     background-color: deepskyblue;
@@ -66,26 +71,41 @@ body {
     width: 100%;
     height: 2.5rem;
     font-size: 2rem;
+    text-align: center;
 }
 #startside form img {
     margin: 0 auto;
     height: 2.5rem;
 }
 #knappLagVinnertall {
-    margin: 10rem auto;
+    margin: 5rem auto;
     padding: 2rem;
-    width: 25rem;
-    border-radius: 2%;
+    width: 20rem;
+    height: 20rem;
+    border-radius: 50%;
     border: none;
     background-color: green;
     font-family: Broadway;
     font-size: 4rem;
+    outline: none;
 }
 #knappLagVinnertall:hover {
     background-color: greenyellow;
 }
 #knappLagVinnertall:active {
     background-color: green;
+}
+#ingameside {
+    grid-template-columns: repeat(12, 1fr);
+    text-align: center;
+    margin-top: 2rem;
+    width: 100vw;
+}
+#tidtaker {
+    border: 0.1rem solid black;
+    padding: 1rem;
+    font-size: 1.5rem;
+    margin-left: 1rem;
 }
 #flexfill {
     flex-grow: 1;
