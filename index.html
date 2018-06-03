@@ -8,7 +8,7 @@
 <body>
     <header><h1 id="logo">Gjett tallet!</h1></header>
     <main>
-        <article id="startside" style="display: none">
+        <article id="startside" style="display: grid">
             <h2>Velg vanskelighetsgrad</h2>
             <form id="skjemaLagVinnertall">
                 <div class="kol-4"></div>
@@ -34,23 +34,60 @@
                 <div class="kol-5"></div>
             </form>
         </article>
-        <article id="ingameside" style="display: grid">
-            <div class="kol-2" id="tidtaker">Tid: <label class="ingameminutter">00</label>:<label id="ingamesekunder">00</label></div>
-            <div class="kol-10"></div>
+        <article id="ingameside" style="display: none">
+            <div class="kol-3" id="tidtaker"><b>Gjenstående tid:</b> <label id="ingamesekunder">30</label> sek</div>
+            <div class="kol-9"></div>
+            <div class="kol-3" id="gjettecontainer"><b>Antall gjetninger igjen:</b> <label id="ingamegjetninger">10</label></div>
+            <div class="kol-9"></div>
             <div class="kol-2"></div>
-            <div class="kol-8">Definisjonsmengde</div>
+            <div id="defmengdeContainer" class="kol-8">
+                <p>X1</p>
+                <div class="defSpan"></div>
+                <p>X2</p>
+
+                <div class="defArrow"></div>
+                <div class="defSpan"></div>
+                <div class="defArrow"></div>
+
+                <div class="defLinje"></div>
+            </div>
             <div class="kol-2"></div>
             <div class="kol-5"></div>
-            <label class="kol-2" for="inpGjetting">Din gjettning</label>
+            <label class="kol-2" for="inpGjetning">Din gjetning</label>
             <div class="kol-5"></div>
             <div class="kol-5"></div>
-            <input class="kol-2" id="inpGjetting" type="number">
+            <input class="kol-2" id="inpGjetning" type="number">
             <div class="kol-5"></div>
-            <button class="kol-12" type="button">Gjett!</button>
-            <div id="ingameresultater"></div>
+            <button class="kol-12" type="button" id="knappGjetning">Gjett!</button>
         </article>
         <article id="resultatside" style="display: none">
+            <h2 class="kol-12">Gratulerer, du gjettet riktig!</h2>
+            <h3 class="kol-12">Tallet var:</h3>
+            <div id="vinnertallResultat" class="kol-12"></div>
+            <h2 class="kol-12">Resultater</h2>
+            <div class="kol-12" id="resultater">
+                <b>Vanskelighetsgrad:</b>
+                <p id="resultatVanskelighetsgrad"></p>
+                <b>Brukt tid:</b>
+                <p id="resultatBruktTid">10 sek</p>
+                <b>Antall forsøk:</b>
+                <p id="resultatAntallForsok">5</p>
+                <b>Score:</b>
+                <p id="resultatScore">48532</p>
 
+            </div>
+            <h2 class="kol-12">Registrer ditt resultat</h2>
+            <div class="kol-5"></div>
+            <form class="kol-2">
+                <label for="inpNavnResultater">Navn:</label>
+                <input id="inpNavnResultater" type="text" required placeholder="Ole" />
+
+                <label for="inpEpostResultater">Epost:</label>
+                <input id="inpEpostResultater" type="email" placeholder="ole.olesen@online.com"/>
+
+                <button type="submit">Send mine resultater</button>
+            </form>
+            <div class="kol-5"></div>
         </article>
     </main>
     <div id="flexfill"></div>

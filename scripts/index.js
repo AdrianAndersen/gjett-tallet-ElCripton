@@ -2,8 +2,8 @@
 const database = firebase.database();
 
 // Henter HTML-elementer
-var inpGjetting = document.getElementById("inpGjetting");
-var minVal, maxVal, vinnertall;
+var inpGjetning = document.getElementById("inpGjetning");
+var minVal, maxVal, vinnertall, valgtVanskelighetsgrad;
 
 const startside = document.getElementById("startside");
 const ingameside = document.getElementById("ingameside");
@@ -15,6 +15,13 @@ const knappDifMiddels = document.getElementById("knappDifMiddels");
 const knappDifVanskelig = document.getElementById("knappDifVanskelig");
 const knappDifGodTid = document.getElementById("knappDifGodTid");
 const knappDifEgendefinert = document.getElementById("knappDifEgendefinert");
+
+const knappGjetning = document.getElementById("knappGjetning");
+
+// Elementer til den grafiske tallfremstillingen
+const defSpan = document.getElementsByClassName("defSpan");
+const defLinje = document.getElementsByClassName("defLinje");
+const defmengdeContainer = document.getElementById("defmengdeContainer");
 
 // Input-elementer
 const inpMinValVinnertall = document.getElementById("inpMinValVinnertall");
@@ -34,6 +41,8 @@ function setVanskelighetsgradLett(event) {
     knappDifVanskelig.className = "difknapper";
     knappDifGodTid.className = "difknapper";
     knappDifEgendefinert.className = "kol-2 difknapper";
+
+    valgtVanskelighetsgrad = "Lett";
 }
 function setVanskelighetsgradMiddels(event) {
     if (event) {
@@ -47,6 +56,8 @@ function setVanskelighetsgradMiddels(event) {
     knappDifVanskelig.className = "difknapper";
     knappDifGodTid.className = "difknapper";
     knappDifEgendefinert.className = "kol-2 difknapper";
+
+    valgtVanskelighetsgrad = "Middels";
 }
 function setVanskelighetsgradVanskelig(event) {
     if (event) {
@@ -60,6 +71,8 @@ function setVanskelighetsgradVanskelig(event) {
     knappDifVanskelig.className = "difknapper difknappValgt";
     knappDifGodTid.className = "difknapper";
     knappDifEgendefinert.className = "kol-2 difknapper";
+
+    valgtVanskelighetsgrad = "Vanskelig";
 }
 function setVanskelighetsgradGodTid(event) {
     if (event) {
@@ -73,6 +86,8 @@ function setVanskelighetsgradGodTid(event) {
     knappDifVanskelig.className = "difknapper";
     knappDifGodTid.className = "difknapper difknappValgt";
     knappDifEgendefinert.className = "kol-2 difknapper";
+
+    valgtVanskelighetsgrad = "Så du har god tid?";
 }
 function setVanskelighetsgradEgendefinert(event) {
     if (event) {
@@ -87,11 +102,17 @@ function setVanskelighetsgradEgendefinert(event) {
     knappDifVanskelig.className = "difknapper";
     knappDifGodTid.className = "difknapper";
     knappDifEgendefinert.className = "kol-2 difknapper difknappValgt";
+
+    valgtVanskelighetsgrad = "Egendefinert";
+}
+function setStandardVanskelighetsgrad() {
+    inpMinValVinnertall.value = "-10";
+    inpMaxValVinnertall.value = "10";
+    setVanskelighetsgradLett();
 }
 
 // Sjekker om min og max-verdiene for tallet stemmer med noen forhåndsbestemte vanskelighetsgrader
 function finnVanskelighetsgrad() {
-    console.log("Minval: ", inpMinValVinnertall.value, "maxval: ", inpMaxValVinnertall.value)
     if (inpMinValVinnertall.value == -10 && inpMaxValVinnertall.value == 10) {
         setVanskelighetsgradLett();
     }
@@ -126,25 +147,42 @@ function startSpill() {
     startside.style.display = "none";
     ingameside.style.display = "grid";
     startTimer()
+    setDefmengde()
 }
-startTimer() {
-
+function setDefmengde() {
+    var tallmengde = maxVal - minVal;
+    console.log("tallmengde: ", tallmengde);
+    defmengdeContainer.style.gridTemplateColumns = tallmengde;
+    defSpan.style.gridColumn = "span " + tallmengde - 2;
+    defLinje.style.gridColumn = "span " + tallmengde;
+}
+function startTimer() {
+    console.log("timer...")
 }
 
 // Lytter funksjon som kalles når noen har gjort en gjetning.
 function gjett() {
 
     // Henter ut tallet brukeren har gjettet og gjør om det til et tall
-    var gjettetTall = Number(inpGjetting.value);
-    if (gjettetTall == vinnertall) {
-        console.log("Du fikk rett");
+    var gjettetTall = Number(inpGjetning.value);
+    if (gjettetTall === vinnertall) {
+        visResultater();
     }
-    else if (gjettetTall >> vinnertall) {
+    else if (gjettetTall > vinnertall) {
         console.log("Tallet er for stort");
+        inpGjetning.value = "";
     }
-    else if (gjettetTall << vinnertall) {
+    else if (gjettetTall < vinnertall) {
         console.log("Tallet er for lite");
-    }
+        inpGjetning.value = "";
+    } 
+}
+
+function visResultater() {
+    document.getElementById("resultatside").style.display = "grid";
+    ingameside.style.display = "none";
+    document.getElementById("vinnertallResultat").innerHTML = vinnertall;
+    document.getElementById("resultatVanskelighetsgrad").innerHTML = valgtVanskelighetsgrad;
 }
 
 // Lyttefunksjoner
@@ -158,3 +196,8 @@ knappDifEgendefinert.addEventListener("click", setVanskelighetsgradEgendefinert)
 // Lytter etter endringer i input-elementene for vanskelighetsgrad
 inpMinValVinnertall.addEventListener("input", finnVanskelighetsgrad);
 inpMaxValVinnertall.addEventListener("input", finnVanskelighetsgrad);
+
+inpGjetning.addEventListener("change", gjett);
+knappGjetning.addEventListener("click", gjett);
+
+setStandardVanskelighetsgrad()
