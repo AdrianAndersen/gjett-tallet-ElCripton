@@ -153,6 +153,8 @@ function lagVinnertall(event) {
 function startSpill() {
     startside.style.display = "none";
     ingameside.style.display = "grid";
+    inpGjetning.value = "";
+    document.getElementById("ingamegjetninger").innerHTML = maxAntallGjetninger;
     startTimer()
 }
 /*
@@ -168,6 +170,7 @@ function startTimer() {
 function oppdaterAntallGjetninger() {
     maxAntallGjetninger--;
     brukteGjetninger++;
+    document.getElementById("ingamegjetninger").innerHTML = maxAntallGjetninger;
     if (maxAntallGjetninger == 0) {
         console.log("Du tapte")
     }
@@ -187,11 +190,13 @@ function gjett() {
     else if (gjettetTall > vinnertall && gjettetTall <= maxVal) {
         defMaxVal.innerHTML = gjettetTall;
         inpGjetning.value = "";
+        maxVal = gjettetTall;
         oppdaterAntallGjetninger()
     }
     else if (gjettetTall < vinnertall && gjettetTall >= minVal) {
         defMinVal.innerHTML = gjettetTall;
         inpGjetning.value = "";
+        minVal = gjettetTall;
         oppdaterAntallGjetninger()
     }
     else {
@@ -210,6 +215,7 @@ function visResultater() {
     document.getElementById("vinnertallResultat").innerHTML = vinnertall;
     document.getElementById("resultatVanskelighetsgrad").innerHTML = valgtVanskelighetsgrad;
     document.getElementById("resultatAntallForsok").innerHTML = brukteGjetninger;
+    document.getElementById("resultatAntallMuligeTall").innerHTML = tallmengde;
 }
 
 // Lyttefunksjoner
