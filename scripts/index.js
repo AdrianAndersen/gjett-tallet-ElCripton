@@ -1,35 +1,38 @@
 // Henter roten til databasen
 const database = firebase.database();
+const lb = database.ref("lb")
 
 // Henter HTML-elementer
-var inpGjetning = document.getElementById("inpGjetning");
-var minVal, maxVal, vinnertall, valgtVanskelighetsgrad, tallmengde;
-var maxAntallGjetninger = 10;
-var brukteGjetninger = 0;
-
 const startside = document.getElementById("startside");
 const ingameside = document.getElementById("ingameside");
 const resultatside = document.getElementById("resultatside");
+const topp5Container = document.getElementById("topp5Container");
 
-// Vanskelighetsgradsknapper
+// Knapper
 const knappDifLett = document.getElementById("knappDifLett");
 const knappDifMiddels = document.getElementById("knappDifMiddels");
 const knappDifVanskelig = document.getElementById("knappDifVanskelig");
 const knappDifGodTid = document.getElementById("knappDifGodTid");
 const knappDifEgendefinert = document.getElementById("knappDifEgendefinert");
-
 const knappGjetning = document.getElementById("knappGjetning");
-
-// Elementer til den grafiske tallfremstillingen
-const defSpan = document.getElementsByClassName("defSpan");
-const defLinje = document.getElementsByClassName("defLinje");
-const defmengdeContainer = document.getElementById("defmengdeContainer");
-const defMinVal = document.getElementById("defMinVal");
-const defMaxVal = document.getElementById("defMaxVal");
 
 // Input-elementer
 const inpMinValVinnertall = document.getElementById("inpMinValVinnertall");
 const inpMaxValVinnertall = document.getElementById("inpMaxValVinnertall");
+const inpGjetning = document.getElementById("inpGjetning");
+
+// Elementer til den grafiske tallfremstillingen
+const defMinVal = document.getElementById("defMinVal");
+const defMaxVal = document.getElementById("defMaxVal");
+
+// Variabler 
+var minVal, maxVal, vinnertall, valgtVanskelighetsgrad, tallmengde;
+var tempMaxVal;
+var tempMinVal;
+var maxAntallGjetninger = 10;
+var brukteGjetninger = 0;
+var tidKlokke = 30;
+var spilletErIGang = false;
 
 // Fyller inn input felt med forhåndsdefinerte verdier
 function setVanskelighetsgradLett(event) {
@@ -150,29 +153,59 @@ function lagVinnertall(event) {
     }
 }
 
+// Viser spillsiden
 function startSpill() {
+    spilletErIGang = true;
     startside.style.display = "none";
     ingameside.style.display = "grid";
     inpGjetning.value = "";
     document.getElementById("ingamegjetninger").innerHTML = maxAntallGjetninger;
     startTimer()
+    tempMinVal = minVal;
+    tempMaxVal = maxVal;
 }
-/*
+
+// Håndterer den grafiske fremstillingene av mulige tall
+
 function setDefmengde() {
-    defmengdeContainer.style.gridTemplateColumns = tallmengde;
-    defSpan.style.gridColumn = "span " + tallmengde - 2;
-    defLinje.style.gridColumn = "span " + tallmengde;
+    var topLeft = document.getElementById("topLeft");
+    var topMiddle = document.getElementById("topMiddle");
+    var topRight = document.getElementById("topRight");
+    var bottomLeft = document.getElementById("bottomLeft");
+    var bottomMiddle = document.getElementById("bottomMiddle");
+    var bottomRight = document.getElementById("bottomRight");
 }
-*/
+
+
+// Håndterer 30-sekundersklokken og avslutter spillet dersom tiden er ute
 function startTimer() {
-    console.log("timer...")
+    var interval = 1000; // ms
+    setTimeout(step, interval);
+    function step() {
+        document.getElementById("ingamesekunder").innerHTML = tidKlokke;
+        tidKlokke--;
+        if (tidKlokke <= -1 && spilletErIGang == true) {
+            spilletErIGang = false;
+            ingameside.style.display = "none";
+            document.getElementById("gameOver").style.display = "block";
+            document.getElementById("gameOverTid").style.display = "block";
+            document.getElementById("gameOverRiktigTall").innerHTML = vinnertall;
+        }
+        setTimeout(step, interval);
+    }
 }
+
+// Håndterer begrensningene ved antall gjetninger
 function oppdaterAntallGjetninger() {
     maxAntallGjetninger--;
     brukteGjetninger++;
     document.getElementById("ingamegjetninger").innerHTML = maxAntallGjetninger;
-    if (maxAntallGjetninger == 0) {
-        console.log("Du tapte")
+    if (maxAntallGjetninger == 0 && spilletErIGang == true) {
+        spilletErIGang = false;
+        ingameside.style.display = "none";
+        document.getElementById("gameOver").style.display = "block";
+        document.getElementById("gameOverForsok").style.display = "block";
+        document.getElementById("gameOverRiktigTall").innerHTML = vinnertall;
     }
 }
 
@@ -181,22 +214,23 @@ function gjett() {
 
     // Henter ut tallet brukeren har gjettet og gjør om det til et tall
     var gjettetTall = Number(inpGjetning.value);
-    if (gjettetTall === vinnertall) {
+    if (gjettetTall === vinnertall && spilletErIGang == true) {
+        spilletErIGang = false;
         genererScore();
         maxAntallGjetninger--;
         brukteGjetninger++;
         visResultater();
     }
-    else if (gjettetTall > vinnertall && gjettetTall <= maxVal) {
+    else if (gjettetTall > vinnertall && gjettetTall <= tempMaxVal) {
         defMaxVal.innerHTML = gjettetTall;
         inpGjetning.value = "";
-        maxVal = gjettetTall;
+        tempMaxVal = gjettetTall;
         oppdaterAntallGjetninger()
     }
-    else if (gjettetTall < vinnertall && gjettetTall >= minVal) {
+    else if (gjettetTall < vinnertall && gjettetTall >= tempMinVal) {
         defMinVal.innerHTML = gjettetTall;
         inpGjetning.value = "";
-        minVal = gjettetTall;
+        tempMinVal = gjettetTall;
         oppdaterAntallGjetninger()
     }
     else {
@@ -205,17 +239,60 @@ function gjett() {
     }
 }
 
+// Lager variabler for resultater som skal sendes til Firebase
 function genererScore() {
-    document.getElementById("resultatScore").innerHTML = tallmengde * maxAntallGjetninger;
+    slutttid = tidKlokke;
+    lbTid = 30 - slutttid;
+    lbGjetninger = maxAntallGjetninger;
+    lbAntallMuligeTall = tallmengde;
+    lbVinnertall = vinnertall;
+    lbVanskelighetsgrad = valgtVanskelighetsgrad;
+    lbScore = lbAntallMuligeTall * lbGjetninger * slutttid;
+    document.getElementById("resultatScore").innerHTML = lbScore;
+    document.getElementById("inpNavnResultater").value = "";
+    document.getElementById("inpEpostResultater").value = "";
 }
 
+// Henter ut og viser resultatene
 function visResultater() {
     document.getElementById("resultatside").style.display = "grid";
     ingameside.style.display = "none";
+    document.getElementById("gameOver").style.display = "none";
     document.getElementById("vinnertallResultat").innerHTML = vinnertall;
     document.getElementById("resultatVanskelighetsgrad").innerHTML = valgtVanskelighetsgrad;
     document.getElementById("resultatAntallForsok").innerHTML = brukteGjetninger;
     document.getElementById("resultatAntallMuligeTall").innerHTML = tallmengde;
+    document.getElementById("resultatBruktTid").innerHTML = lbTid;
+}
+
+// Sender resultatet til Firebase
+function nyttResultat(event) {
+    event.preventDefault();
+    let navn = document.getElementById("inpNavnResultater").value;
+    let epost = document.getElementById("inpEpostResultater").value;
+    lb.push(
+        {
+            "navn": navn,
+            "epost": epost,
+            "score": lbScore,
+            "antallMuligeTall": lbAntallMuligeTall,
+            "antallGjetninger": lbGjetninger,
+            "bruktTid": lbTid,
+            "vinnertall": lbVinnertall,
+            "vanskelighetsgrad": lbVanskelighetsgrad
+        }
+    );
+    var skjemaRegResultat = document.getElementById("skjemaRegResultat");
+    skjemaRegResultat.style.display = "block";
+    skjemaRegResultat.style.textAlign = "center";
+    skjemaRegResultat.style.margin = "1rem 0";
+    skjemaRegResultat.innerHTML = "<h2>Ditt resultat ble registrert!</h2>";
+}
+
+function leggTilResultat(snapshot) {
+    let nyttResultat = snapshot.val();
+    let entry = `<div>${nyttResultat.navn}</div><div>${nyttResultat.score}</div>`;
+    topp5Container.innerHTML += entry;
 }
 
 // Lyttefunksjoner
@@ -225,17 +302,21 @@ knappDifMiddels.addEventListener("click", setVanskelighetsgradMiddels);
 knappDifVanskelig.addEventListener("click", setVanskelighetsgradVanskelig);
 knappDifGodTid.addEventListener("click", setVanskelighetsgradGodTid);
 knappDifEgendefinert.addEventListener("click", setVanskelighetsgradEgendefinert);
+document.getElementById("knappSendResultat").addEventListener("click", nyttResultat);
+lb.on("child_added", leggTilResultat);
 
 // Lytter etter endringer i input-elementene for vanskelighetsgrad
 inpMinValVinnertall.addEventListener("input", finnVanskelighetsgrad);
 inpMaxValVinnertall.addEventListener("input", finnVanskelighetsgrad);
 
+// Lytter etter at noen sender inn en gjetning
 inpGjetning.addEventListener('keypress', function (e) {
     var key = e.which || e.keyCode;
-    if(key === 13) {
-    gjett()
+    if (key === 13) {
+        gjett()
     }
 });
 knappGjetning.addEventListener("click", gjett);
 
+// Setter standard vanskelighetsgrad når siden åpnes
 setStandardVanskelighetsgrad()
