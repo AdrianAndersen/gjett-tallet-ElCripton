@@ -121,7 +121,10 @@ body {
     grid-column: span 12;
 }
 .defLinje, .defArrow {
-    background-color: black;
+    background-color: gray;
+}
+#defMinVal, #defMaxVal {
+    font-size: 3rem;
 }
 #ingameside label {
     font-size: 3rem;

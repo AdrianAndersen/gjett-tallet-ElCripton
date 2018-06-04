@@ -3,7 +3,9 @@ const database = firebase.database();
 
 // Henter HTML-elementer
 var inpGjetning = document.getElementById("inpGjetning");
-var minVal, maxVal, vinnertall, valgtVanskelighetsgrad;
+var minVal, maxVal, vinnertall, valgtVanskelighetsgrad, tallmengde;
+var maxAntallGjetninger = 10;
+var brukteGjetninger = 0;
 
 const startside = document.getElementById("startside");
 const ingameside = document.getElementById("ingameside");
@@ -22,6 +24,8 @@ const knappGjetning = document.getElementById("knappGjetning");
 const defSpan = document.getElementsByClassName("defSpan");
 const defLinje = document.getElementsByClassName("defLinje");
 const defmengdeContainer = document.getElementById("defmengdeContainer");
+const defMinVal = document.getElementById("defMinVal");
+const defMaxVal = document.getElementById("defMaxVal");
 
 // Input-elementer
 const inpMinValVinnertall = document.getElementById("inpMinValVinnertall");
@@ -137,6 +141,9 @@ function lagVinnertall(event) {
     maxVal = Number(inpMaxValVinnertall.value);
     if (minVal < maxVal) {
         vinnertall = Math.floor(Math.random() * (maxVal - minVal)) + minVal;
+        defMinVal.innerHTML = minVal;
+        defMaxVal.innerHTML = maxVal;
+        tallmengde = maxVal - minVal;
         startSpill();
     } else {
         alert("Fra-verdien m\u00e5 v\u00e6re st\u00f8rre enn til-verdien!")
@@ -147,17 +154,23 @@ function startSpill() {
     startside.style.display = "none";
     ingameside.style.display = "grid";
     startTimer()
-    setDefmengde()
 }
+/*
 function setDefmengde() {
-    var tallmengde = maxVal - minVal;
-    console.log("tallmengde: ", tallmengde);
     defmengdeContainer.style.gridTemplateColumns = tallmengde;
     defSpan.style.gridColumn = "span " + tallmengde - 2;
     defLinje.style.gridColumn = "span " + tallmengde;
 }
+*/
 function startTimer() {
     console.log("timer...")
+}
+function oppdaterAntallGjetninger() {
+    maxAntallGjetninger--;
+    brukteGjetninger++;
+    if (maxAntallGjetninger == 0) {
+        console.log("Du tapte")
+    }
 }
 
 // Lytter funksjon som kalles når noen har gjort en gjetning.
@@ -166,16 +179,29 @@ function gjett() {
     // Henter ut tallet brukeren har gjettet og gjør om det til et tall
     var gjettetTall = Number(inpGjetning.value);
     if (gjettetTall === vinnertall) {
+        genererScore();
+        maxAntallGjetninger--;
+        brukteGjetninger++;
         visResultater();
     }
-    else if (gjettetTall > vinnertall) {
-        console.log("Tallet er for stort");
+    else if (gjettetTall > vinnertall && gjettetTall <= maxVal) {
+        defMaxVal.innerHTML = gjettetTall;
         inpGjetning.value = "";
+        oppdaterAntallGjetninger()
     }
-    else if (gjettetTall < vinnertall) {
-        console.log("Tallet er for lite");
+    else if (gjettetTall < vinnertall && gjettetTall >= minVal) {
+        defMinVal.innerHTML = gjettetTall;
         inpGjetning.value = "";
-    } 
+        oppdaterAntallGjetninger()
+    }
+    else {
+        inpGjetning.value = "";
+        oppdaterAntallGjetninger()
+    }
+}
+
+function genererScore() {
+    document.getElementById("resultatScore").innerHTML = tallmengde * maxAntallGjetninger;
 }
 
 function visResultater() {
@@ -183,6 +209,7 @@ function visResultater() {
     ingameside.style.display = "none";
     document.getElementById("vinnertallResultat").innerHTML = vinnertall;
     document.getElementById("resultatVanskelighetsgrad").innerHTML = valgtVanskelighetsgrad;
+    document.getElementById("resultatAntallForsok").innerHTML = brukteGjetninger;
 }
 
 // Lyttefunksjoner
@@ -197,7 +224,12 @@ knappDifEgendefinert.addEventListener("click", setVanskelighetsgradEgendefinert)
 inpMinValVinnertall.addEventListener("input", finnVanskelighetsgrad);
 inpMaxValVinnertall.addEventListener("input", finnVanskelighetsgrad);
 
-inpGjetning.addEventListener("change", gjett);
+inpGjetning.addEventListener('keypress', function (e) {
+    var key = e.which || e.keyCode;
+    if(key === 13) {
+    gjett()
+    }
+});
 knappGjetning.addEventListener("click", gjett);
 
 setStandardVanskelighetsgrad()
