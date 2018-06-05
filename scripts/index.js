@@ -159,6 +159,7 @@ function startSpill() {
     startside.style.display = "none";
     ingameside.style.display = "grid";
     inpGjetning.value = "";
+    inpGjetning.focus();
     document.getElementById("ingamegjetninger").innerHTML = maxAntallGjetninger;
     startTimer()
     tempMinVal = minVal;

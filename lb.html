@@ -24,6 +24,22 @@
             text-align: center;
             margin: 2rem 0;
         }
+        #tilbakeTilForsiden {
+            height: 5rem;
+            width: 10rem;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            border: none;
+            background-color: lightgreen;
+            font-size: 1.3rem;
+        }
+        #tilbakeTilForsiden:hover {
+            background-color: lawngreen;
+        }
+        #tilbakeTilForsiden:active {
+            background-color: lightseagreen;
+        }
         main {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -51,6 +67,7 @@
     <header>
         <h1>Resultatliste for <i>Gjettespillet!</i></h1>
     </header>
+    <button id="tilbakeTilForsiden" onclick="window.location.href='index.html'">Tilbake til forsiden</button>
     <main>
         <h2>Navn</h2>
         <h2>Score</h2>
@@ -85,9 +102,14 @@
 
         function leggTilResultat(snapshot) {
             let nyttResultat = snapshot.val();
+            let entry = `<div>${nyttResultat.navn}</div><div>${nyttResultat.score}</div>
+                         <div>${nyttResultat.antallGjetninger}</div><div>${nyttResultat.bruktTid} sek</div>
+                         <div>${nyttResultat.vanskelighetsgrad}</div><div>${nyttResultat.antallMuligeTall}</div>
+                         <div>${nyttResultat.vinnertall}</div>`;
+            document.getElementById("resultatliste").innerHTML = entry + document.getElementById("resultatliste").innerHTML
         }
 
-        lb.on("child_added", leggTilResultat);
+        lb.orderByChild("score").on("child_added", leggTilResultat);
     </script>
 </body>
 </html>
