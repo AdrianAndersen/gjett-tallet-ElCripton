@@ -7,6 +7,14 @@ const startside = document.getElementById("startside");
 const ingameside = document.getElementById("ingameside");
 const resultatside = document.getElementById("resultatside");
 const topp5Container = document.getElementById("topp5Container");
+const gameOverside = document.getElementById("gameOver");
+
+// audio
+var lydFeil = new Audio('audio/feil.mp3');
+var lydStartside = new Audio('audio/startside.mp3');
+var lydIngame = new Audio('audio/ingame.mp3');
+var lydGameOver = new Audio('audio/gameOver.mp3');
+var lydVictory = new Audio('audio/victory.mp3');
 
 // Knapper
 const knappDifLett = document.getElementById("knappDifLett");
@@ -158,6 +166,7 @@ function startSpill() {
     spilletErIGang = true;
     startside.style.display = "none";
     ingameside.style.display = "grid";
+    lydHandler()
     inpGjetning.value = "";
     inpGjetning.focus();
     document.getElementById("ingamegjetninger").innerHTML = maxAntallGjetninger;
@@ -191,6 +200,7 @@ function startTimer() {
             document.getElementById("gameOver").style.display = "block";
             document.getElementById("gameOverTid").style.display = "block";
             document.getElementById("gameOverRiktigTall").innerHTML = vinnertall;
+            lydHandler()
         }
         setTimeout(step, interval);
     }
@@ -207,6 +217,7 @@ function oppdaterAntallGjetninger() {
         document.getElementById("gameOver").style.display = "block";
         document.getElementById("gameOverForsok").style.display = "block";
         document.getElementById("gameOverRiktigTall").innerHTML = vinnertall;
+        lydHandler()
     }
 }
 
@@ -228,6 +239,8 @@ function gjett() {
         tempMaxVal = gjettetTall;
         oppdaterAntallGjetninger()
         inpGjetning.focus();
+        lydFeil.play();
+
     }
     else if (gjettetTall < vinnertall && gjettetTall >= tempMinVal) {
         defMinVal.innerHTML = gjettetTall;
@@ -235,11 +248,13 @@ function gjett() {
         tempMinVal = gjettetTall;
         oppdaterAntallGjetninger()
         inpGjetning.focus();
+        lydFeil.play();
     }
     else {
         inpGjetning.value = "";
         oppdaterAntallGjetninger()
         inpGjetning.focus();
+        lydFeil.play();
     }
 }
 
@@ -267,6 +282,7 @@ function visResultater() {
     document.getElementById("resultatAntallForsok").innerHTML = brukteGjetninger;
     document.getElementById("resultatAntallMuligeTall").innerHTML = tallmengde;
     document.getElementById("resultatBruktTid").innerHTML = lbTid;
+    lydHandler();
 }
 
 // Sender resultatet til Firebase
@@ -299,6 +315,36 @@ function leggTilResultatIndex(snapshot) {
     topp5Container.innerHTML = entry + topp5Container.innerHTML;
 }
 
+// Håndterer lyd
+function lydHandler() {
+    if (startside.style.display == "grid") {
+        lydStartside.play();
+        lydFeil.pause();
+        lydIngame.pause();
+        lydGameOver.pause();
+        lydVictory.pause();
+    } else if (ingameside.style.display == "grid") {
+        lydStartside.pause();
+        lydFeil.pause();
+        lydIngame.play();
+        lydGameOver.pause();
+        lydVictory.pause();
+    }
+    else if (gameOverside.style.display == "block") {
+        lydStartside.pause();
+        lydFeil.pause();
+        lydIngame.pause();
+        lydGameOver.play();
+        lydVictory.pause();
+    } else if (resultatside.style.display == "grid") {
+        lydStartside.pause();
+        lydFeil.pause();
+        lydIngame.pause();
+        lydGameOver.pause();
+        lydVictory.play();
+    } 
+}
+
 // Lyttefunksjoner
 document.getElementById("skjemaLagVinnertall").onsubmit = lagVinnertall;
 knappDifLett.addEventListener("click", setVanskelighetsgradLett);
@@ -324,3 +370,5 @@ knappGjetning.addEventListener("click", gjett);
 
 // Setter standard vanskelighetsgrad n�r siden �pnes
 setStandardVanskelighetsgrad()
+lydHandler();
+lydStartside.play();

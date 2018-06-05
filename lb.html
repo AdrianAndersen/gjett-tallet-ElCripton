@@ -108,8 +108,9 @@
                          <div>${nyttResultat.vinnertall}</div>`;
             document.getElementById("resultatliste").innerHTML = entry + document.getElementById("resultatliste").innerHTML
         }
-
         lb.orderByChild("score").on("child_added", leggTilResultat);
+        lydLb = new Audio('audio/lb.mp3')
+        lydLb.play();
     </script>
 </body>
 </html>
