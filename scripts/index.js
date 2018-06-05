@@ -293,7 +293,7 @@ function nyttResultat(event) {
     skjemaRegResultat.innerHTML = "<h2>Ditt resultat ble registrert!</h2>";
 }
 
-function leggTilResultat(snapshot) {
+function leggTilResultatIndex(snapshot) {
     let nyttResultat = snapshot.val();
     let entry = `<div>${nyttResultat.navn}</div><div>${nyttResultat.score}</div>`;
     topp5Container.innerHTML = entry + topp5Container.innerHTML;
@@ -307,7 +307,7 @@ knappDifVanskelig.addEventListener("click", setVanskelighetsgradVanskelig);
 knappDifGodTid.addEventListener("click", setVanskelighetsgradGodTid);
 knappDifEgendefinert.addEventListener("click", setVanskelighetsgradEgendefinert);
 document.getElementById("knappSendResultat").addEventListener("click", nyttResultat);
-lb.orderByChild("score").limitToLast(5).on("child_added", leggTilResultat);
+lb.orderByChild("score").limitToLast(5).on("child_added", leggTilResultatIndex);
 
 // Lytter etter endringer i input-elementene for vanskelighetsgrad
 inpMinValVinnertall.addEventListener("input", finnVanskelighetsgrad);
