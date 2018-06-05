@@ -34,7 +34,7 @@ var brukteGjetninger = 0;
 var tidKlokke = 30;
 var spilletErIGang = false;
 
-// Fyller inn input felt med forhåndsdefinerte verdier
+// Fyller inn input felt med forhï¿½ndsdefinerte verdier
 function setVanskelighetsgradLett(event) {
     if (event) {
         event.preventDefault();
@@ -94,7 +94,7 @@ function setVanskelighetsgradGodTid(event) {
     knappDifGodTid.className = "difknapper difknappValgt";
     knappDifEgendefinert.className = "kol-2 difknapper";
 
-    valgtVanskelighetsgrad = "Så du har god tid?";
+    valgtVanskelighetsgrad = "Sï¿½ du har god tid?";
 }
 function setVanskelighetsgradEgendefinert(event) {
     if (event) {
@@ -118,7 +118,7 @@ function setStandardVanskelighetsgrad() {
     setVanskelighetsgradLett();
 }
 
-// Sjekker om min og max-verdiene for tallet stemmer med noen forhåndsbestemte vanskelighetsgrader
+// Sjekker om min og max-verdiene for tallet stemmer med noen forhï¿½ndsbestemte vanskelighetsgrader
 function finnVanskelighetsgrad() {
     if (inpMinValVinnertall.value == -10 && inpMaxValVinnertall.value == 10) {
         setVanskelighetsgradLett();
@@ -166,7 +166,7 @@ function startSpill() {
     tempMaxVal = maxVal;
 }
 
-// Håndterer den grafiske fremstillingene av mulige tall
+// Hï¿½ndterer den grafiske fremstillingene av mulige tall
 
 function setDefmengde() {
     var topLeft = document.getElementById("topLeft");
@@ -178,7 +178,7 @@ function setDefmengde() {
 }
 
 
-// Håndterer 30-sekundersklokken og avslutter spillet dersom tiden er ute
+// Hï¿½ndterer 30-sekundersklokken og avslutter spillet dersom tiden er ute
 function startTimer() {
     var interval = 1000; // ms
     setTimeout(step, interval);
@@ -196,7 +196,7 @@ function startTimer() {
     }
 }
 
-// Håndterer begrensningene ved antall gjetninger
+// Hï¿½ndterer begrensningene ved antall gjetninger
 function oppdaterAntallGjetninger() {
     maxAntallGjetninger--;
     brukteGjetninger++;
@@ -210,10 +210,10 @@ function oppdaterAntallGjetninger() {
     }
 }
 
-// Lytter funksjon som kalles når noen har gjort en gjetning.
+// Lytter funksjon som kalles nï¿½r noen har gjort en gjetning.
 function gjett() {
 
-    // Henter ut tallet brukeren har gjettet og gjør om det til et tall
+    // Henter ut tallet brukeren har gjettet og gjï¿½r om det til et tall
     var gjettetTall = Number(inpGjetning.value);
     if (gjettetTall === vinnertall && spilletErIGang == true) {
         spilletErIGang = false;
@@ -227,16 +227,19 @@ function gjett() {
         inpGjetning.value = "";
         tempMaxVal = gjettetTall;
         oppdaterAntallGjetninger()
+        inpGjetning.focus();
     }
     else if (gjettetTall < vinnertall && gjettetTall >= tempMinVal) {
         defMinVal.innerHTML = gjettetTall;
         inpGjetning.value = "";
         tempMinVal = gjettetTall;
         oppdaterAntallGjetninger()
+        inpGjetning.focus();
     }
     else {
         inpGjetning.value = "";
         oppdaterAntallGjetninger()
+        inpGjetning.focus();
     }
 }
 
@@ -319,5 +322,5 @@ inpGjetning.addEventListener('keypress', function (e) {
 });
 knappGjetning.addEventListener("click", gjett);
 
-// Setter standard vanskelighetsgrad når siden åpnes
+// Setter standard vanskelighetsgrad nï¿½r siden ï¿½pnes
 setStandardVanskelighetsgrad()
