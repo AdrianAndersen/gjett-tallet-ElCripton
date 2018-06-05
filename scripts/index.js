@@ -369,6 +369,7 @@ inpGjetning.addEventListener('keypress', function (e) {
 knappGjetning.addEventListener("click", gjett);
 
 // Setter standard vanskelighetsgrad n�r siden �pnes
-setStandardVanskelighetsgrad()
+setStandardVanskelighetsgrad();
+document.body.addEventListener("click", lydHandler);
 lydHandler();
 lydStartside.play();
